@@ -35,6 +35,11 @@ subjectTest <- read.table("UCI HAR Dataset/test/subject_test.txt")
 subjectTrain <- read.table("UCI HAR Dataset/train/subject_train.txt")
 subject <- c(subjectTest, subjectTrain)
 
-activityTest <-  read.table("UCI HAR Dataset/test/subject_test.txt")
-activityTrain <- read.table("UCI HAR Dataset/train/subject_train.txt")
+activityTest <-  read.table("UCI HAR Dataset/test/y_test.txt")
+activityTrain <- read.table("UCI HAR Dataset/train/y_train.txt")
 names(activityTest) <- "activity"
+
+
+
+# цепляю имена к фактору
+activity <- factor(activity[[1]], levels = activityLabels[[1]], labels = activityLabels[[2]])
