@@ -43,3 +43,59 @@ names(activityTest) <- "activity"
 
 # цепляю имена к фактору
 activity <- factor(activity[[1]], levels = activityLabels[[1]], labels = activityLabels[[2]])
+
+
+# Tidy Data and the Assignment
+        # https://class.coursera.org/getdata-031/forum/thread?thread_id=113
+narrow <- mtcars[, c("cyl", "gear", "vs", "mpg")]
+narrow
+
+library(reshape2)
+wide1 <- tidied <- dcast(narrow, cyl + gear ~ vs, max)
+wide1
+
+wide2 <- tidied <- dcast(narrow, cyl + vs ~ gear, max)
+wide2
+
+notverywide <- aggregate(mpg ~ gear + vs + cyl, data = narrow, max)
+notverywide
+
+untidy <- with(narrow, tapply(mpg, list(cyl, vs, gear), max))
+untidy
+
+# расплющиваем данные
+library(reshape2)
+datamelt <- melt(data, id.vars = c("subject", "activity"))
+
+# Подсчитываем средние
+castdata <- dcast(datamelt,   formula = subject ~ activity, mean) 
+        # Среднее по всем переменным вмесе для контроля
+
+
+# разделяем данные
+splitdatamelt <- split(datamelt, datamelt$variable)
+
+# Список фреймов. Каждый фрейм - переменная
+dcastapplydata <- lapply(splitdatamelt, dcast,   formula = subject ~ activity, mean)
+
+
+# матрицы и массивы
+ar1 <- array(data = c(1:16), dim = c(4,4))
+ar2 <- array(data = c(1:16), dim = c(4,4))
+colnames(ar1) <- c("A","B","D","E")
+colnames(ar2) <- c("C","A","E","B")
+# get the common names between the matrices
+same <- intersect(colnames(ar1), colnames(ar2))
+# join them together
+rbind(ar1[,same], ar2[,same])
+
+
+library(abind)
+adata <- abind(dcastapplydata, rev.along=0)
+
+library(abind)
+adata <- abind(dcastapplydata, rev.along=0)adata[,4,]
+
+adata[,"WALKING",]
+adata[,"WALKING",fBodyAccJerk.std...Z]
+adata[,"WALKING","fBodyAccJerk.std...Z"]
