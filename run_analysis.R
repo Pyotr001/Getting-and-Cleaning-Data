@@ -35,7 +35,7 @@ activityLabels <- read.table("UCI HAR Dataset/activity_labels.txt",
                              colClasses = c("integer", "character"))
 data$activity <- factor(activity[[1]], levels = activityLabels[[1]], 
                    labels = activityLabels[[2]])
-data$subject <- as.factor(data$subject)
+# data$subject <- as.factor(data$subject)
 
 
 # From the data set in step 4, creates a second, independent tidy data set with 
@@ -62,6 +62,12 @@ adata <- abind(dcastapplydata, rev.along=0)
 rownames(adata) <- 1:30
 # добавил имена, так как dimnames[1] выдавал [NULL], через dimnames нельзя поменять
         # поменять имена, если значение NULL - пишет, что длина не совпадает
+        # но сработало и dimnames(adata)[[1]] <- 1:30 (двойные кавычки)
+        # в одинарных кавычках выдает список c одним элементом NULL
 
 adata <- adata[,-1,] # нужно удалить одни слой, так как он заполнен значениями
         # из названийй испытуемых
+save(adata, file="adata.RData")
+load("adata.RData")
+
+
