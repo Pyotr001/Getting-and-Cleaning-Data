@@ -5,12 +5,12 @@ data <- rbind((read.table("UCI HAR Dataset/test/X_test.txt")),
               (read.table("UCI HAR Dataset/train/X_train.txt")))
         #1st - test, 2nd - train
 
-        # load subject 
+        # load and merge subject 
 subject <- rbind(read.table("UCI HAR Dataset/test/subject_test.txt"),
                  read.table("UCI HAR Dataset/train/subject_train.txt"))
 names(subject) <- c("subject")
 
-        # load activity
+        # load  and merge activity
 activity <- rbind(read.table("UCI HAR Dataset/test/y_test.txt"),
                    read.table("UCI HAR Dataset/train/y_train.txt"))
 names(activity) <- c("activity")
@@ -21,10 +21,11 @@ names(data) <- make.names(dataNames[[2]], unique = TRUE)
 
 
 
-# Extracts only the measurements on the mean and standard deviation for each measurement.
+# Extracts only the measurements on the mean and standard deviation for 
+        # each measurement.
 meanCol <- grep("mean\\(\\)", dataNames[[2]])
 stdCol <- grep("std\\(\\)", dataNames[[2]])
-data <- data[c( meanCol, stdCol)] # выбираю колонки их фрейма
+data <- data[c( meanCol, stdCol)] # выбираю колонки из фрейма
 
 #  data merge
 data <- cbind(subject, activity, data)
@@ -47,12 +48,20 @@ datamelt <- melt(data, id.vars = c("subject", "activity"))
         # как данные
 
 
+
 # разделяем данные
 splitdatamelt <- split(datamelt, datamelt$variable)
         # получаем список фреймов
 
 # Список фреймов. Каждый элемент списка фрейм с данными по одной из переменных
-dcastapplydata <- lapply(splitdatamelt, dcast,   formula = subject ~ activity, mean)
+dcastapplydata <- lapply(splitdatamelt, dcast, formula = subject ~ activity, mean)
 
-library(abind)
-adata <- abind(dcastapplydata, rev.along=0)
+library(abind) # библиотека для соединения многомерных масивов
+adata <- abind(dcastapplydata, rev.along=0) 
+
+rownames(adata) <- 1:30
+# добавил имена, так как dimnames[1] выдавал [NULL], через dimnames нельзя поменять
+        # поменять имена, если значение NULL - пишет, что длина не совпадает
+
+adata <- adata[,-1,] # нужно удалить одни слой, так как он заполнен значениями
+        # из названийй испытуемых
