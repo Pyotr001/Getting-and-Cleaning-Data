@@ -35,39 +35,17 @@ activityLabels <- read.table("UCI HAR Dataset/activity_labels.txt",
                              colClasses = c("integer", "character"))
 data$activity <- factor(activity[[1]], levels = activityLabels[[1]], 
                    labels = activityLabels[[2]])
-# data$subject <- as.factor(data$subject)
+data$subject <- as.factor(data$subject)
 
 
 # From the data set in step 4, creates a second, independent tidy data set with 
         # the average of each variable for each activity and each subject.
 
-# расплющиваем данные
 library(reshape2)
 datamelt <- melt(data, id.vars = c("subject", "activity"))
-        #Создаём расплавленную форму. Все переменные, которые не id предполагаются
-        # как данные
+tidyData <- dcast(datamelt, formula=variable + subject ~ activity, mean)
+write.table(tidyData, file = "data.txt", row.names = F)
 
 
-
-# разделяем данные
-splitdatamelt <- split(datamelt, datamelt$variable)
-        # получаем список фреймов
-
-# Список фреймов. Каждый элемент списка фрейм с данными по одной из переменных
-dcastapplydata <- lapply(splitdatamelt, dcast, formula = subject ~ activity, mean)
-
-library(abind) # библиотека для соединения многомерных масивов
-adata <- abind(dcastapplydata, rev.along=0) 
-
-rownames(adata) <- 1:30
-# добавил имена, так как dimnames[1] выдавал [NULL], через dimnames нельзя поменять
-        # поменять имена, если значение NULL - пишет, что длина не совпадает
-        # но сработало и dimnames(adata)[[1]] <- 1:30 (двойные кавычки)
-        # в одинарных кавычках выдает список c одним элементом NULL
-
-adata <- adata[,-1,] # нужно удалить одни слой, так как он заполнен значениями
-        # из названийй испытуемых
-save(adata, file="adata.RData")
-load("adata.RData")
-
+# data <- read.table("data.txt", header = T)
 
