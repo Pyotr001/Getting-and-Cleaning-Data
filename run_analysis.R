@@ -6,14 +6,14 @@ data <- rbind((read.table("UCI HAR Dataset/test/X_test.txt")),
         #1st - test, 2nd - train
 
         # load and merge subject 
-subject <- rbind(read.table("UCI HAR Dataset/test/subject_test.txt"),
-                 read.table("UCI HAR Dataset/train/subject_train.txt"))
-names(subject) <- c("subject")
+subject <- rbind(read.table("UCI HAR Dataset/test/subject_test.txt", col.names = "subject"),
+                 read.table("UCI HAR Dataset/train/subject_train.txt", col.names = "subject"))
+
 
         # load  and merge activity
-activity <- rbind(read.table("UCI HAR Dataset/test/y_test.txt"),
-                   read.table("UCI HAR Dataset/train/y_train.txt"))
-names(activity) <- c("activity")
+activity <- rbind(read.table("UCI HAR Dataset/test/y_test.txt", col.names = "activity"),
+                   read.table("UCI HAR Dataset/train/y_train.txt", col.names = "activity"))
+
 
 # Appropriately labels the data set with descriptive variable names. 
 dataNames <- read.table("UCI HAR Dataset/features.txt")
