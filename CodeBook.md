@@ -1,11 +1,88 @@
 a code book that describes the variables, the data, and any transformations or work that you performed to clean up the data called CodeBook.md
 
-You should create one R script called run_analysis.R that does the following. 
-Merges the training and the test sets to create one data set.
-Extracts only the measurements on the mean and standard deviation for each measurement. 
-Uses descriptive activity names to name the activities in the data set
-Appropriately labels the data set with descriptive variable names. 
-From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
-
 
 This script assume the data has been downloaded and the UCI HAR Dataset folder is in the working directory"
+
+Te script find data from original files that have "mean()" or "std()" in the colomn name. So it takes "tBodyAcc-mean()-X" and doesn't take "angle(Z,gravityMean)" 
+The script uses make.names() to makesyntactically valid names out of character vectors:
+
+ [1] "tBodyAcc.mean...X"          
+ [2] "tBodyAcc.mean...Y"          
+ [3] "tBodyAcc.mean...Z"          
+ [4] "tGravityAcc.mean...X"       
+ [5] "tGravityAcc.mean...Y"       
+ [6] "tGravityAcc.mean...Z"       
+ [7] "tBodyAccJerk.mean...X"      
+ [8] "tBodyAccJerk.mean...Y"      
+ [9] "tBodyAccJerk.mean...Z"      
+[10] "tBodyGyro.mean...X"         
+[11] "tBodyGyro.mean...Y"         
+[12] "tBodyGyro.mean...Z"         
+[13] "tBodyGyroJerk.mean...X"     
+[14] "tBodyGyroJerk.mean...Y"     
+[15] "tBodyGyroJerk.mean...Z"     
+[16] "tBodyAccMag.mean.."         
+[17] "tGravityAccMag.mean.."      
+[18] "tBodyAccJerkMag.mean.."     
+[19] "tBodyGyroMag.mean.."        
+[20] "tBodyGyroJerkMag.mean.."    
+[21] "fBodyAcc.mean...X"          
+[22] "fBodyAcc.mean...Y"          
+[23] "fBodyAcc.mean...Z"          
+[24] "fBodyAccJerk.mean...X"      
+[25] "fBodyAccJerk.mean...Y"      
+[26] "fBodyAccJerk.mean...Z"      
+[27] "fBodyGyro.mean...X"         
+[28] "fBodyGyro.mean...Y"         
+[29] "fBodyGyro.mean...Z"         
+[30] "fBodyAccMag.mean.."         
+[31] "fBodyBodyAccJerkMag.mean.." 
+[32] "fBodyBodyGyroMag.mean.."    
+[33] "fBodyBodyGyroJerkMag.mean.."
+[34] "tBodyAcc.std...X"           
+[35] "tBodyAcc.std...Y"           
+[36] "tBodyAcc.std...Z"           
+[37] "tGravityAcc.std...X"        
+[38] "tGravityAcc.std...Y"        
+[39] "tGravityAcc.std...Z"        
+[40] "tBodyAccJerk.std...X"       
+[41] "tBodyAccJerk.std...Y"       
+[42] "tBodyAccJerk.std...Z"       
+[43] "tBodyGyro.std...X"          
+[44] "tBodyGyro.std...Y"          
+[45] "tBodyGyro.std...Z"          
+[46] "tBodyGyroJerk.std...X"      
+[47] "tBodyGyroJerk.std...Y"      
+[48] "tBodyGyroJerk.std...Z"      
+[49] "tBodyAccMag.std.."          
+[50] "tGravityAccMag.std.."       
+[51] "tBodyAccJerkMag.std.."      
+[52] "tBodyGyroMag.std.."         
+[53] "tBodyGyroJerkMag.std.."     
+[54] "fBodyAcc.std...X"           
+[55] "fBodyAcc.std...Y"           
+[56] "fBodyAcc.std...Z"           
+[57] "fBodyAccJerk.std...X"       
+[58] "fBodyAccJerk.std...Y"       
+[59] "fBodyAccJerk.std...Z"       
+[60] "fBodyGyro.std...X"          
+[61] "fBodyGyro.std...Y"          
+[62] "fBodyGyro.std...Z"          
+[63] "fBodyAccMag.std.."          
+[64] "fBodyBodyAccJerkMag.std.."  
+[65] "fBodyBodyGyroMag.std.."     
+[66] "fBodyBodyGyroJerkMag.std.." 
+
+In the tidy data set you can find the average of each variable for each activity and each subject.
+
+The data shaped in a long form.
+There are 8 colmn. 
+- variable 
+- subject
+- WALKING
+- WALKING_UPSTAIRS
+- WALKING_DOWNSTAIRS
+- SITTING
+- STANDING
+- LAYING
+

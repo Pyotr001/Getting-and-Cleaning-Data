@@ -25,7 +25,7 @@ names(data) <- make.names(dataNames[[2]], unique = TRUE)
         # each measurement.
 meanCol <- grep("mean\\(\\)", dataNames[[2]])
 stdCol <- grep("std\\(\\)", dataNames[[2]])
-data <- data[c( meanCol, stdCol)] # выбираю колонки из фрейма
+data <- data[c( meanCol, stdCol)] # 
 
 #  data merge
 data <- cbind(subject, activity, data)
