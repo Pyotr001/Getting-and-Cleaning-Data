@@ -150,6 +150,30 @@ write.table(tidyData, file = "data.txt", row.names = F)
 
 # data <- read.table("data.txt", header = T)
 
+##Проверка работ - найденные варианты скриптов
+adata <- aggregate(data[3:68], list(data$subject, data$activity), FUN=mean)
+
+
+# features_needed <- features[grepl("mean()",features[,2])|grepl("std()",features[,2]),]
+dataShort <- datafull[c(grep("mean\\(\\)", dataNames[[2]]),
+                        grep("std\\(\\)", dataNames[[2]]))]
+
+dataShort <- datafull[grep("mean\\(\\)|std\\(\\)" , dataNames[[2]])]
+## скобки вроде бы пропадают из имен перменных
+
+## не пробовал: 
+        # list_mean_std <- grep("-(mean|std)\\(\\)", features[, 2])  
 
 
 
+library(dplyr)
+dataShort <- select(data, contains("mean.."), contains("std"))\
+
+library(dplyr)
+data_grouped <- group_by(data, subject, activity)
+meandata <- summarise_each(data_grouped, funs(mean))
+
+
+library(plyr)
+meandata <- ddply(data, .(subject, activity),
+                  function(x) colMeans(x[, 3:68]))
